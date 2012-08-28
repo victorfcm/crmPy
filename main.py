@@ -35,7 +35,6 @@ class mainPanel():
 		"""
 			Função construct que cria a janela principal e seus widgets
 		"""
-		
 		# cria a janela
 		self.janela = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		self.janela.set_title("CRM Py")
@@ -77,6 +76,15 @@ class mainPanel():
 		self.janela.show_all()
 		
 	def clearForm(arg1, arg2):
+		"""
+			Função que limpa os campos do form
+			
+			@param:
+				arg1 = Objeto GTK.Window
+				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
+			
+			#TODO : fazer de modo que eu não precise definir o nome de cada campo
+		"""
 		arg1.field.set_text("")
 	
 	def submitForm(arg1, arg2):
@@ -87,12 +95,11 @@ class mainPanel():
 				arg1 = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
-		
 		hoje = date.today()
 		data = arg1.field.get_text()
 		
 		if data != "":
-			texto = "Cliente %s adicionado no dia %s" % (data, hoje)
+			texto = "Cliente %s adicionado no dia %s \n" % (data, hoje)
 			print texto
 			
 			with open("listaClientes.txt" , "a") as arq:
