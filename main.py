@@ -46,6 +46,7 @@ class mainPanel():
 		self.field = gtk.Entry() # input do nome
 		self.submit_bt = gtk.Button("Enviar") # botão de enviar
 		self.reset_bt = gtk.Button("Limpar") # botão de limpar os campos
+		self.view_bt = gtk.Button("Ver Cadastrados") # botão que vizualisa todos os clientes cadastrados
 		
 		# cria os boxes horizontais
 		self.boxTop = gtk.HBox() # box superior que contém o titulo
@@ -58,6 +59,7 @@ class mainPanel():
 		self.boxMid.pack_start(self.field)
 		self.boxBottom.pack_start(self.submit_bt)
 		self.boxBottom.pack_start(self.reset_bt)
+		self.boxBottom.pack_start(self.view_bt)
 		
 		# cria box vertical
 		self.body = gtk.VBox()
@@ -70,11 +72,24 @@ class mainPanel():
 		# adiciona triggers
 		self.submit_bt.connect('clicked', self.submitForm) # linka o click no botão submit a função de enviar o form
 		self.reset_bt.connect('clicked', self.clearForm) # linka o click no botão de reset a função que limpa o form
+		self.view_bt.connect('clicked', self.viewAll) # linka o click no botão de viewAll a função que vizualiza todos os cadastrados
 		
 		# adiciona body na janela
 		self.janela.add(self.body)
 		self.janela.show_all()
 		
+	def viewAll(arg1, arg2):
+		"""
+			Função que vizualiza todos os cadastrados no arquivo
+			listaClientes.txt
+			
+			@param:
+				arg1 = Objeto GTK.Window
+				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
+		"""
+		data = open("listaClientes.txt", "r")
+		print(data.read())
+	
 	def clearForm(arg1, arg2):
 		"""
 			Função que limpa os campos do form
