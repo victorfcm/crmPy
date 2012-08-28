@@ -22,6 +22,7 @@
 #  
 #  
 
+from datetime import date
 import pygtk
 import gtk
 
@@ -87,10 +88,17 @@ class mainPanel():
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
 		
+		hoje = date.today()
 		data = arg1.field.get_text()
 		
 		if data != "":
-			print "Cliente %s adicionado" % data
+			texto = "Cliente %s adicionado no dia %s" % (data, hoje)
+			print texto
+			
+			with open("listaClientes.txt" , "a") as arq:
+				arq.write(texto)
+				arq.close
+			
 		else:
 			print "Por favor, digite o nome do cliente"
 
