@@ -44,12 +44,12 @@ class mainPanel():
 		self.rotulo = gtk.Label("Bem vindo") # rotulo superior
 		self.label = gtk.Label("Nome do cliente: ") # label do campo
 		self.field = gtk.Entry() # input do nome
-		self.submit_bt = gtk.Button("Enviar.")
+		self.submit_bt = gtk.Button("Enviar.") # botão de enviar
 		
 		# cria os boxes horizontais
-		self.boxTop = gtk.HBox()
-		self.boxMid = gtk.HBox()
-		self.boxBottom = gtk.HBox()
+		self.boxTop = gtk.HBox() # box superior que contém o titulo
+		self.boxMid = gtk.HBox() # box do meio que contém o campo a ser preenchido
+		self.boxBottom = gtk.HBox() # box inferior que contém o botão de enviar
 		
 		# adiciona os conteudos as boxes horizontais
 		self.boxTop.pack_start(self.rotulo)
@@ -66,16 +66,24 @@ class mainPanel():
 		self.body.pack_start(self.boxBottom)
 		
 		# adiciona triggers
-		self.submit_bt.connect('clicked', self.submitForm)
+		self.submit_bt.connect('clicked', self.submitForm) # linka o click no botão submit a função de enviar o form
 		
 		# adiciona body na janela
 		self.janela.add(self.body)
 		self.janela.show_all()
 		
 	def submitForm(arg1, arg2):
+		"""
+			Função que envia o formulário preenchido na main panel
+			
+			@param:
+				arg1 = Objeto GTK.Window
+				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
+		"""
+		
 		data = arg1.field.get_text()
 		print "Cliente %s adicionado" % data
 
 
-panel = mainPanel()
-gtk.main()
+panel = mainPanel() # chama a class
+gtk.main() # inicia o GTK
