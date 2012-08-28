@@ -43,6 +43,7 @@ class mainPanel():
 		# cria os widgets
 		self.rotulo = gtk.Label("Bem vindo") # rotulo superior
 		self.label = gtk.Label("Nome do cliente: ") # label do campo
+		self.msg = gtk.Label() # TextView das mensagens
 		self.field = gtk.Entry() # input do nome
 		self.submit_bt = gtk.Button("Enviar") # botão de enviar
 		self.reset_bt = gtk.Button("Limpar") # botão de limpar os campos
@@ -52,6 +53,7 @@ class mainPanel():
 		self.boxTop = gtk.HBox() # box superior que contém o titulo
 		self.boxMid = gtk.HBox() # box do meio que contém o campo a ser preenchido
 		self.boxBottom = gtk.HBox() # box inferior que contém o botão de enviar
+		self.boxMsg = gtk.HBox() # box de mensagens
 		
 		# adiciona os conteudos as boxes horizontais
 		self.boxTop.pack_start(self.rotulo)
@@ -60,6 +62,7 @@ class mainPanel():
 		self.boxBottom.pack_start(self.submit_bt)
 		self.boxBottom.pack_start(self.reset_bt)
 		self.boxBottom.pack_start(self.view_bt)
+		self.boxMsg.pack_start(self.msg)
 		
 		# cria box vertical
 		self.body = gtk.VBox()
@@ -68,6 +71,7 @@ class mainPanel():
 		self.body.pack_start(self.boxTop)
 		self.body.pack_start(self.boxMid)
 		self.body.pack_start(self.boxBottom)
+		self.body.pack_start(self.boxMsg)
 		
 		# adiciona triggers
 		self.submit_bt.connect('clicked', self.submitForm) # linka o click no botão submit a função de enviar o form
@@ -78,51 +82,62 @@ class mainPanel():
 		self.janela.add(self.body)
 		self.janela.show_all()
 		
-	def viewAll(arg1, arg2):
+	def viewAll(self, arg2):
 		"""
 			Função que vizualiza todos os cadastrados no arquivo
 			listaClientes.txt
 			
 			@param:
-				arg1 = Objeto GTK.Window
+				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
 		data = open("listaClientes.txt", "r")
-		print(data.read())
+		self.setMsg(data.read())
 	
-	def clearForm(arg1, arg2):
+	def clearForm(self, arg2):
 		"""
 			Função que limpa os campos do form
 			
 			@param:
-				arg1 = Objeto GTK.Window
+				self = Objeto SELF
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 			
 			#TODO : fazer de modo que eu não precise definir o nome de cada campo
 		"""
-		arg1.field.set_text("")
+		self.field.set_text("")
+		self.msg.set_text("")
 	
-	def submitForm(arg1, arg2):
+	def submitForm(self, arg2):
 		"""
 			Função que envia o formulário preenchido na main panel
 			
 			@param:
-				arg1 = Objeto GTK.Window
+				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
 		hoje = date.today()
-		data = arg1.field.get_text()
+		data = self.field.get_text()
 		
 		if data != "":
 			texto = "Cliente %s adicionado no dia %s \n" % (data, hoje)
-			print texto
+			self.setMsg(texto)
 			
 			with open("listaClientes.txt" , "a") as arq:
 				arq.write(texto)
 				arq.close
 			
 		else:
-			print "Por favor, digite o nome do cliente"
+			self.setMsg("Por favor, digite o nome do cliente")
+			
+	def setMsg(self, msg):
+		"""
+			Função que exibe as mensagens do programa numa box
+			
+			@param:
+				self = Objeto GTK.Window
+				msg = Mensagem a ser exibida
+		"""
+		self.msg.set_text(msg)
 
 
 panel = mainPanel() # chama a class
