@@ -68,12 +68,18 @@ class mainPanel():
 		
 		# cria box vertical
 		self.body = gtk.VBox()
+		self.right = gtk.VBox()
+		self.left = gtk.VBox()
 		
-		# adiciona o conteudo a box vertical
-		self.body.pack_start(self.boxTop)
-		self.body.pack_start(self.boxMid)
-		self.body.pack_start(self.boxBottom)
-		self.body.pack_start(self.boxMsg)
+		# adiciona o conteudo as boxes verticais
+		self.right.pack_start(self.boxTop)
+		self.right.pack_start(self.boxMid)
+		self.right.pack_start(self.boxBottom)
+		self.left.pack_start(self.boxMsg)
+		
+		# adiciona as boxes verticais ao body
+		self.body.pack_start(self.right)
+		self.body.pack_start(self.left)
 		
 		# adiciona triggers
 		self.submit_bt.connect('clicked', self.submitForm) # linka o click no botão submit a função de enviar o form
@@ -148,5 +154,7 @@ class mainPanel():
 		"""
 		self.msg.set_text(msg)
 
-panel = mainPanel() # chama a class
-gtk.main() # inicia o GTK
+
+if __name__ == "__main__":
+	panel = mainPanel() # chama a class
+	gtk.main() # inicia o GTK
