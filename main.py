@@ -86,8 +86,7 @@ class mainPanel():
 		
 	def viewAll(self, arg2):
 		"""
-			Função que vizualiza todos os cadastrados no arquivo
-			listaClientes.txt
+			Função que vizualiza todos os cadastrados no banco
 			
 			@param:
 				self = Objeto GTK.Window
