@@ -93,7 +93,7 @@ class mainPanel():
 		data = date.today()
 		nome = self.glade.get_object("nome").get_text()
 		
-		if data != "":
+		if nome:
 			texto = "Cliente %s adicionado no dia %s \n" % (nome, data)
 			self.setMsg(texto)
 			
