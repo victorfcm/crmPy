@@ -32,11 +32,11 @@
  - Descobrir o que são os "segundos parametros" passados nas funções
  - Melhorar a explicação nas Docstrings
 * Futuro :
- - Gerar um pacote .deb
- - Utilizar o py2exe para criar um executável do Windows.
- - Deixar o programa com uma cara mais "User Friendly"
- - Adicionar botão para gerar backup do banco de dados.
- - Adicionar "teclas de atalho" :
-  + Enter, enviar o form
-  + ESC, limpar o form
-  + CTRL + A, visualizar todos
+ + Gerar um pacote .deb
+ + Utilizar o py2exe para criar um executável do Windows.
+ + Deixar o programa com uma cara mais "User Friendly"
+ + Adicionar botão para gerar backup do banco de dados.
+ + Adicionar "teclas de atalho" :
+  - Enter, enviar o form
+  - ESC, limpar o form
+  - CTRL + A, visualizar todos
