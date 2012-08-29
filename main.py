@@ -25,6 +25,7 @@
 from datetime import date
 import pygtk
 import gtk
+import conexao
 
 class mainPanel():
 	"""
@@ -92,9 +93,13 @@ class mainPanel():
 				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
-		with open("listaClientes.txt", "r") as data:
-			self.setMsg(data.read())
-			data.close()
+		texto = "Clientes : \n"
+		conexao.db.execute('SELECT * FROM cliente')
+		clientes = conexao.db.fetchall()
+		for cliente in clientes:
+			texto += cliente[1]+"\n"
+		
+		self.setMsg(texto)
 	
 	def clearForm(self, arg2):
 		"""
@@ -117,16 +122,19 @@ class mainPanel():
 				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
-		hoje = date.today()
-		data = self.field.get_text()
+		data = date.today()
+		nome = self.field.get_text()
 		
 		if data != "":
-			texto = "Cliente %s adicionado no dia %s \n" % (data, hoje)
+			texto = "Cliente %s adicionado no dia %s \n" % (nome, data)
 			self.setMsg(texto)
 			
-			with open("listaClientes.txt" , "a") as arq:
-				arq.write(texto)
-				arq.close
+			try:
+				conexao.db.execute("INSERT INTO cliente (nome) VALUES ('%s')" % nome)
+				conexao.con.commit()
+			except:
+				conexao.con.rollback()
+				self.setMsg('Erro no SQL, por favor, verifique as configurações');
 			
 		else:
 			self.setMsg("Por favor, digite o nome do cliente")
@@ -140,7 +148,6 @@ class mainPanel():
 				msg = Mensagem a ser exibida
 		"""
 		self.msg.set_text(msg)
-
 
 panel = mainPanel() # chama a class
 gtk.main() # inicia o GTK
