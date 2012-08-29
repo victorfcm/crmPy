@@ -30,6 +30,7 @@ class mainPanel():
 	"""
 		Cria a janela principal da aplicação.
 	"""
+	version = '0.1'
 	
 	def __init__(self):
 		"""
