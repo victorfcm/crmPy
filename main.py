@@ -91,8 +91,9 @@ class mainPanel():
 				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
-		data = open("listaClientes.txt", "r")
-		self.setMsg(data.read())
+		with open("listaClientes.txt", "r") as data:
+			self.setMsg(data.read())
+			data.close()
 	
 	def clearForm(self, arg2):
 		"""
