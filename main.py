@@ -25,6 +25,7 @@
 from datetime import date
 import pygtk
 import gtk
+import gtk.glade
 import conexao
 
 class mainPanel():
@@ -37,58 +38,20 @@ class mainPanel():
 		"""
 			Função construct que cria a janela principal e seus widgets
 		"""
-		# cria a janela
-		self.janela = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		self.janela.set_title("CRM Py")
-		self.janela.set_size_request(400, 200)
+		self.gladefile = "crmpy.glade" 
+		self.glade = gtk.Builder()
+		self.glade.add_from_file(self.gladefile)
 		
-		# cria os widgets
-		self.rotulo = gtk.Label("Bem vindo") # rotulo superior
-		self.label = gtk.Label("Nome do cliente: ") # label do campo
-		self.msg = gtk.Label() # TextView das mensagens
-		self.field = gtk.Entry() # input do nome
-		self.submit_bt = gtk.Button("Enviar") # botão de enviar
-		self.reset_bt = gtk.Button("Limpar") # botão de limpar os campos
-		self.view_bt = gtk.Button("Ver Cadastrados") # botão que vizualisa todos os clientes cadastrados
+		# Dicionário das triggers5
+		dic = { 
+			"submit_bt_clicked" : self.submitForm, 
+			"reset_bt_clicked" : self.clearForm, 
+			"view_bt_clicked" : self.viewAll 
+		}
 		
-		# cria os boxes horizontais
-		self.boxTop = gtk.HBox() # box superior que contém o titulo
-		self.boxMid = gtk.HBox() # box do meio que contém o campo a ser preenchido
-		self.boxBottom = gtk.HBox() # box inferior que contém o botão de enviar
-		self.boxMsg = gtk.HBox() # box de mensagens
+		self.glade.connect_signals(dic)
+		self.glade.get_object("MainWindow").show_all()
 		
-		# adiciona os conteudos as boxes horizontais
-		self.boxTop.pack_start(self.rotulo)
-		self.boxMid.pack_start(self.label)
-		self.boxMid.pack_start(self.field)
-		self.boxBottom.pack_start(self.submit_bt)
-		self.boxBottom.pack_start(self.reset_bt)
-		self.boxBottom.pack_start(self.view_bt)
-		self.boxMsg.pack_start(self.msg)
-		
-		# cria box vertical
-		self.body = gtk.VBox()
-		self.right = gtk.VBox()
-		self.left = gtk.VBox()
-		
-		# adiciona o conteudo as boxes verticais
-		self.right.pack_start(self.boxTop)
-		self.right.pack_start(self.boxMid)
-		self.right.pack_start(self.boxBottom)
-		self.left.pack_start(self.boxMsg)
-		
-		# adiciona as boxes verticais ao body
-		self.body.pack_start(self.right)
-		self.body.pack_start(self.left)
-		
-		# adiciona triggers
-		self.submit_bt.connect('clicked', self.submitForm) # linka o click no botão submit a função de enviar o form
-		self.reset_bt.connect('clicked', self.clearForm) # linka o click no botão de reset a função que limpa o form
-		self.view_bt.connect('clicked', self.viewAll) # linka o click no botão de viewAll a função que vizualiza todos os cadastrados
-		
-		# adiciona body na janela
-		self.janela.add(self.body)
-		self.janela.show_all()
 		
 	def viewAll(self, arg2):
 		"""
@@ -116,9 +79,9 @@ class mainPanel():
 			
 			#TODO : fazer de modo que eu não precise definir o nome de cada campo
 		"""
-		self.field.set_text("")
-		self.msg.set_text("")
-	
+		self.glade.get_object('nome').set_text("")
+		self.glade.get_object('msg').set_text("")
+		
 	def submitForm(self, arg2):
 		"""
 			Função que envia o formulário preenchido na main panel
@@ -128,7 +91,7 @@ class mainPanel():
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
 		data = date.today()
-		nome = self.field.get_text()
+		nome = self.glade.get_object("nome").get_text()
 		
 		if data != "":
 			texto = "Cliente %s adicionado no dia %s \n" % (nome, data)
@@ -152,7 +115,7 @@ class mainPanel():
 				self = Objeto GTK.Window
 				msg = Mensagem a ser exibida
 		"""
-		self.msg.set_text(msg)
+		self.glade.get_object('msg').set_text(msg)
 
 
 if __name__ == "__main__":
