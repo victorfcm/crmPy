@@ -1,0 +1,19 @@
+Source: crmpy
+Section: shells
+Priority: optional
+Maintainer: Victor Freitas (vfreitas)
+Build-Depends: debhelper (>=9.0.50~), python-support (>= 0.6), cdbs (>= 0.4.49), python-all-dev
+XS-Python-Version: >=2.4
+Standards-Version: 3.8.4
+
+Package: main
+Architecture: all
+Homepage: http://vfreitas.com/
+XB-Python-Version: ${python:Versions}
+Depends: ${misc:Depends}, ${python:Depends}
+Description: Blah python module that adds blah and bleh (this must not exceed a single line (i.e 60 characters)
+ Here you should put a long description your package. This line *MUST* (this is
+ faor default printing) begin with a single space.
+ Look for more information about this:
+
+http://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Description
