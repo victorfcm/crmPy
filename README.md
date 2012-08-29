@@ -1,6 +1,9 @@
 # CRM Py
 ## simple pyGTK CRM
 
+##### Mudança Importante:
+Layout feito com Glade 3, alterações de XML feitas na mão, e.g.: gtkBox => gtkHBox
+
 ##### Requisitos:
 * Python 2.6 +
 * pyGTK
