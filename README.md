@@ -17,10 +17,6 @@ Layout feito com Glade 3, alterações de XML feitas na mão, e.g.: gtkBox => gt
  - cliente [id, nome, email, telefone, data]
 
 ##### TODO:
-* Layout :
- + Adicionar botão para ativar lightbox (evita o clique fora da aplicação)
- + Adicionar botão para ativar o fullscreen
- + Melhorar saida de texto na mensagem
 * Melhorias :
  + Adicionar validação de campos no submit
  + Criar função para remover cliente

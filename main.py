@@ -26,6 +26,7 @@ from datetime import date
 import pygtk
 import gtk
 import gtk.glade
+import gtk.gdk
 import conexao
 import pprint # fazer um 'var_dump' de uma variável, utilize pprint.pprint(variavel)
 
@@ -45,6 +46,7 @@ class mainPanel():
 		
 		scrolledwindow = self.glade.get_object("scrolled") # pega a box com barra de rolagem
 		scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC) # define que o scroll dela vai ser automático
+		self.glade.get_object("rotulo").modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse('#AAAAAA')) # altera cor do rodapé
 		
 		# Dicionário das triggers
 		dic = { 
@@ -55,7 +57,7 @@ class mainPanel():
 		
 		self.glade.connect_signals(dic) # adiciona os triggers
 		self.updateLayout() # exibe todo conteúdo
-		
+	
 	def viewAll(self, arg2):
 		"""
 			Função que vizualiza todos os cadastrados no banco
@@ -69,15 +71,27 @@ class mainPanel():
 		tbl = gtk.VBox() # cria a vBox da tabela fake
 		self.removeLabel() # remove o label Filho da Viewport
 		dad = self.glade.get_object("viewport1") # pega a viewport
+		c = 1 # zera contador
+		
+		campos = ['ID' , 'Nome', 'Data de criação' ,'Email', 'Telefone'] # define labels do header
+		tln = gtk.HBox() # cria lane header da fake table
+		for campo in campos:
+			f = gtk.Label() # cria o label
+			f.set_markup("<b>"+campo+"</b>") # define o texto
+			tln.pack_start(f)
+		
+		tbl.pack_start(tln) # adiciona o header na fake table
 		
 		for cliente in clientes:
 			ln = gtk.HBox() # seta uma linha na tabela fake
 			
 			for campo in cliente:
 				field = gtk.Label() # chama um label
-				field.set_text(str(campo)) # atribui um texto a ele
+				texto = "<b>"+str(campo)+"</b>" if c % 2 == 0 else str(campo) # cria o efeito "zebra"
+				field.set_markup(texto) # atribui um texto a ele
 				ln.pack_start(field) # adiciona a coluna a linha
-				
+			c += 1
+			
 			tbl.pack_start(ln) # adiciona a linha a tabela fake
 			
 		dad.add(tbl) # adiciona a tabela fake ao viewport
