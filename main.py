@@ -73,13 +73,13 @@ class mainPanel():
 		if event.keyval == 65293: # ENTER
 			self.submitForm(arg1)
 	
-	def viewAll(self, arg2):
+	def viewAll(self, widget):
 		"""
 			Função que vizualiza todos os cadastrados no banco
 			
 			@param:
 				self = Objeto GTK.Window
-				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
+				widget = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
 		conexao.db.execute('SELECT * FROM cliente') # chama a query
 		clientes = conexao.db.fetchall() # transforma os resultados em um dicionário
@@ -132,26 +132,26 @@ class mainPanel():
 		self.removeLabel()
 		self.glade.get_object("viewport1").add(gtk.Label('msg'))
 	
-	def clearForm(self, arg2):
+	def clearForm(self, widget):
 		"""
 			Função que limpa os campos do form
 			
 			@param:
-				self = Objeto SELF
-				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
+				self = Objeto da class
+				widget = Objeto com o Widget que chamou a função
 		"""
 		self.addLabel()
 		self.glade.get_object('nome').set_text("")
 		self.glade.get_object('email').set_text("")
 		self.glade.get_object('telefone').set_text("")
 		
-	def submitForm(self, arg2):
+	def submitForm(self, widget):
 		"""
 			Função que envia o formulário preenchido na main panel
 			
 			@param:
-				self = Objeto GTK.Window
-				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
+				self = Objeto da class
+				widget = Objeto com o Widget que chamou a função
 		"""
 		data = date.today() # pega data de hoje no formato americano
 		nome = self.glade.get_object("nome").get_text() # pega o valor do campo nome
@@ -178,7 +178,7 @@ class mainPanel():
 			Função que exibe as mensagens do programa numa box
 			
 			@param:
-				self = Objeto GTK.Window
+				self = Objeto da class
 				msg = Mensagem a ser exibida
 		"""
 		self.addLabel() # cria o field de mensagens
