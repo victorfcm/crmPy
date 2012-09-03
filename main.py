@@ -27,6 +27,7 @@ import pygtk
 import gtk
 import gtk.glade
 import conexao
+import pprint
 
 class mainPanel():
 	"""
@@ -51,8 +52,6 @@ class mainPanel():
 			"reset_bt_clicked" : self.clearForm, 
 			"view_bt_clicked" : self.viewAll 
 		}
-		
-		# TODO: criar campos automaticamente partindo dos fields do banco.
 		
 		self.glade.connect_signals(dic) # adiciona os triggers
 		self.updateLayout() # exibe todo conteúdo
@@ -112,8 +111,6 @@ class mainPanel():
 			@param:
 				self = Objeto SELF
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
-			
-			#TODO : fazer de modo que eu não precise definir o nome de cada campo
 		"""
 		self.addLabel()
 		self.glade.get_object('nome').set_text("")
@@ -134,7 +131,7 @@ class mainPanel():
 			self.setMsg(texto)
 			
 			try:
-				# TODO : fazer insert automático com o nome dos campos no DB, criar um novo método para inserção
+				# TODO : criar um novo método para inserção
 				conexao.db.execute("INSERT INTO cliente (nome) VALUES ('%s')" % nome) # tenta inserir no banco os dados inseridos
 				conexao.con.commit()
 			except:
