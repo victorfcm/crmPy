@@ -33,6 +33,7 @@ Layout feito com Glade 3, alterações de XML feitas na mão, e.g.: gtkBox => gt
  + Descobrir o que são os "segundos parametros" passados nas funções
  + Melhorar a explicação nas Docstrings
 * Futuro :
+ + Refatorar o código fazendoo funcionar como um MVC
  + Gerar um pacote .deb
  + Utilizar o py2exe para criar um executável do Windows.
  + Deixar o programa com uma cara mais "User Friendly"

@@ -38,11 +38,12 @@ class mainPanel():
 		"""
 			Função construct que cria a janela principal e seus widgets
 		"""
-		self.gladefile = "crmpy.glade" 
-		self.glade = gtk.Builder()
-		self.glade.add_from_file(self.gladefile)
-		scrolledwindow = self.glade.get_object("scrolled")
-		scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		self.gladefile = "crmpy.glade"  # importa o arquivo
+		self.glade = gtk.Builder() # chama o builder
+		self.glade.add_from_file(self.gladefile) # seta o builder para construir a partir do arquivo importado anteriormente
+		
+		scrolledwindow = self.glade.get_object("scrolled") # pega a box com barra de rolagem
+		scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC) # define que o scroll dela vai ser automático
 		
 		# Dicionário das triggers
 		dic = { 
@@ -51,8 +52,10 @@ class mainPanel():
 			"view_bt_clicked" : self.viewAll 
 		}
 		
-		self.glade.connect_signals(dic)
-		self.glade.get_object("MainWindow").show_all()
+		# TODO: criar campos automaticamente partindo dos fields do banco.
+		
+		self.glade.connect_signals(dic) # adiciona os triggers
+		self.updateLayout() # exibe todo conteúdo
 		
 		
 	def viewAll(self, arg2):
@@ -63,30 +66,42 @@ class mainPanel():
 				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
-		conexao.db.execute('SELECT * FROM cliente')
-		clientes = conexao.db.fetchall()
-		tbl = gtk.VBox()
-		self.removeLabel()
-		dad = self.glade.get_object("viewport1")
+		conexao.db.execute('SELECT * FROM cliente') # chama a query
+		clientes = conexao.db.fetchall() # transforma os resultados em um dicionário
+		tbl = gtk.VBox() # cria a vBox da tabela fake
+		self.removeLabel() # remove o label Filho da Viewport
+		dad = self.glade.get_object("viewport1") # pega a viewport
 		
 		for cliente in clientes:
-			ln = gtk.HBox()
+			ln = gtk.HBox() # seta uma linha na tabela fake
 			
 			for campo in cliente:
-				field = gtk.Label()
-				field.set_text(str(campo))
-				ln.pack_start(field)
+				field = gtk.Label() # chama um label
+				field.set_text(str(campo)) # atribui um texto a ele
+				ln.pack_start(field) # adiciona a coluna a linha
 				
-			tbl.pack_start(ln)
+			tbl.pack_start(ln) # adiciona a linha a tabela fake
 			
-		dad.add(tbl)
+		dad.add(tbl) # adiciona a tabela fake ao viewport
+		self.updateLayout() # atualiza todo conteudo
+	
+	def updateLayout(self):
+		"""
+			Atualiza o layout do aplicativo
+		"""
 		self.glade.get_object("MainWindow").show_all()
 	
 	def removeLabel(self):
+		"""
+			Procura dentro da viewport se ele tem algum filho e o destrói
+		"""
 		if self.glade.get_object("viewport1").get_child():
 			self.glade.get_object("viewport1").get_child().destroy()
 	
 	def addLabel(self):
+		"""
+			Adiciona o field de mensagens ao viewport
+		"""
 		self.removeLabel()
 		self.glade.get_object("viewport1").add(gtk.Label('msg'))
 	
@@ -111,19 +126,20 @@ class mainPanel():
 				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
-		data = date.today()
-		nome = self.glade.get_object("nome").get_text()
+		data = date.today() # pega data de hoje no formato americano
+		nome = self.glade.get_object("nome").get_text() # pega o valor do campo
 		
 		if nome:
-			texto = "Cliente %s adicionado no dia %s \n" % (nome, data)
+			texto = "Cliente %s adicionado no dia %s \n" % (nome, data) # define texto de saida
 			self.setMsg(texto)
 			
 			try:
-				conexao.db.execute("INSERT INTO cliente (nome) VALUES ('%s')" % nome)
+				# TODO : fazer insert automático com o nome dos campos no DB, criar um novo método para inserção
+				conexao.db.execute("INSERT INTO cliente (nome) VALUES ('%s')" % nome) # tenta inserir no banco os dados inseridos
 				conexao.con.commit()
 			except:
-				conexao.con.rollback()
-				self.setMsg('Erro no SQL, por favor, verifique as configurações');
+				conexao.con.rollback() # caso não funcione, executa um rollback na query e preserva os dados
+				self.setMsg('Erro no SQL, por favor, verifique as configurações') # exibe a mensagem de erro
 			
 		else:
 			self.setMsg("Por favor, digite o nome do cliente")
@@ -136,9 +152,9 @@ class mainPanel():
 				self = Objeto GTK.Window
 				msg = Mensagem a ser exibida
 		"""
-		self.addLabel()
+		self.addLabel() # cria o field de mensagens
 		self.glade.get_object("viewport1").get_child().set_text(msg)
-		self.glade.get_object("MainWindow").show_all()
+		self.updateLayout()
 
 
 if __name__ == "__main__":
