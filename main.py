@@ -27,7 +27,7 @@ import pygtk
 import gtk
 import gtk.glade
 import conexao
-import pprint
+import pprint # fazer um 'var_dump' de uma variável, utilize pprint.pprint(variavel)
 
 class mainPanel():
 	"""
@@ -55,7 +55,6 @@ class mainPanel():
 		
 		self.glade.connect_signals(dic) # adiciona os triggers
 		self.updateLayout() # exibe todo conteúdo
-		
 		
 	def viewAll(self, arg2):
 		"""
@@ -114,6 +113,8 @@ class mainPanel():
 		"""
 		self.addLabel()
 		self.glade.get_object('nome').set_text("")
+		self.glade.get_object('email').set_text("")
+		self.glade.get_object('telefone').set_text("")
 		
 	def submitForm(self, arg2):
 		"""
@@ -124,22 +125,24 @@ class mainPanel():
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
 		data = date.today() # pega data de hoje no formato americano
-		nome = self.glade.get_object("nome").get_text() # pega o valor do campo
+		nome = self.glade.get_object("nome").get_text() # pega o valor do campo nome
+		email = self.glade.get_object("email").get_text() # pega o valor do campo email
+		telefone = self.glade.get_object("telefone").get_text() # pega o valor do campo telefone
 		
-		if nome:
-			texto = "Cliente %s adicionado no dia %s \n" % (nome, data) # define texto de saida
+		if nome and telefone and email:
+			texto = "Cliente %s adicionado no dia %s \n Telefone: %s \n Email: %s" % (nome, data, telefone, email) # define texto de saida
 			self.setMsg(texto)
 			
 			try:
 				# TODO : criar um novo método para inserção
-				conexao.db.execute("INSERT INTO cliente (nome) VALUES ('%s')" % nome) # tenta inserir no banco os dados inseridos
+				conexao.db.execute("INSERT INTO cliente (nome, email, telefone) VALUES ('%s', '%s', '%s')" % (nome, email, telefone)) # tenta inserir no banco os dados inseridos
 				conexao.con.commit()
 			except:
 				conexao.con.rollback() # caso não funcione, executa um rollback na query e preserva os dados
 				self.setMsg('Erro no SQL, por favor, verifique as configurações') # exibe a mensagem de erro
 			
 		else:
-			self.setMsg("Por favor, digite o nome do cliente")
+			self.setMsg("Por favor, preencha todos os campos")
 			
 	def setMsg(self, msg):
 		"""
