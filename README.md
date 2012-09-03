@@ -30,6 +30,8 @@ Layout feito com Glade 3, alterações de XML feitas na mão, e.g.: gtkBox => gt
  + Criar função para remover cliente
  + Criar função para editar cliente
  + Criar função para buscar cliente
+ + Definir largura fixa para as labels na fake table
+ + Liberar para que as labels da fake table tenham seus textos selecionados
 * Futuro :
  + Refatorar o código fazendoo funcionar como um MVC
  + Gerar um pacote .deb
