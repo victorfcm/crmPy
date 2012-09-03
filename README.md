@@ -8,7 +8,9 @@ Layout feito com Glade 3, alterações de XML feitas na mão, e.g.: gtkBox => gt
 * Python 2.6 +
 * pyGTK
 * GTK+
-* Glade 3 +
+* GDK
+* pPrint ( para dump de variáveis )
+* Glade 3 +  ( desenvolvimento visual do aplicativo )
 * python-mysqldb
 
 
