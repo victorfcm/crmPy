@@ -9,6 +9,7 @@
     <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
     <property name="has_resize_grip">False</property>
+    <signal name="key-press-event" handler="window_keypress" swapped="no"/>
     <child>
       <object class="GtkVBox" id="body">
         <property name="visible">True</property>
@@ -185,7 +186,6 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
-                    <signal name="enter" handler="submit_bt_hover" swapped="no"/>
                     <signal name="clicked" handler="submit_bt_clicked" swapped="no"/>
                   </object>
                   <packing>

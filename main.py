@@ -29,7 +29,6 @@ import gtk.glade
 import gtk.gdk
 import conexao
 import pprint # fazer um 'var_dump' de uma variável, utilize pprint.pprint(variavel)
-
 class mainPanel():
 	"""
 		Cria a janela principal da aplicação.
@@ -50,6 +49,7 @@ class mainPanel():
 		
 		# Dicionário das triggers
 		dic = { 
+			"window_keypress" : self.keyListener,
 			"submit_bt_clicked" : self.submitForm, 
 			"reset_bt_clicked" : self.clearForm, 
 			"view_bt_clicked" : self.viewAll 
@@ -57,6 +57,21 @@ class mainPanel():
 		
 		self.glade.connect_signals(dic) # adiciona os triggers
 		self.updateLayout() # exibe todo conteúdo
+	
+	def keyListener(self, arg1, event):
+		"""
+			Função listener de keypress para execução das teclas de atalho
+		"""
+		if event.keyval == 65307: # ESC
+			gtk.main_quit()
+		if event.keyval == 65470: # F1
+			self.viewAll(arg1)
+		if event.keyval == 65471: # F2
+			self.clearForm(arg1)
+		if event.keyval == 64572: # F3
+			pass # Pesquisar usuario
+		if event.keyval == 65293: # ENTER
+			self.submitForm(arg1)
 	
 	def viewAll(self, arg2):
 		"""
