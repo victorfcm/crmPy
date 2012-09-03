@@ -41,8 +41,10 @@ class mainPanel():
 		self.gladefile = "crmpy.glade" 
 		self.glade = gtk.Builder()
 		self.glade.add_from_file(self.gladefile)
+		scrolledwindow = self.glade.get_object("scrolled")
+		scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		
-		# Dicionário das triggers5
+		# Dicionário das triggers
 		dic = { 
 			"submit_bt_clicked" : self.submitForm, 
 			"reset_bt_clicked" : self.clearForm, 
@@ -61,13 +63,32 @@ class mainPanel():
 				self = Objeto GTK.Window
 				arg2 = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
 		"""
-		texto = "Clientes : \n"
 		conexao.db.execute('SELECT * FROM cliente')
 		clientes = conexao.db.fetchall()
-		for cliente in clientes:
-			texto += cliente[1]+"\n"
+		tbl = gtk.VBox()
+		self.removeLabel()
+		dad = self.glade.get_object("viewport1")
 		
-		self.setMsg(texto)
+		for cliente in clientes:
+			ln = gtk.HBox()
+			
+			for campo in cliente:
+				field = gtk.Label()
+				field.set_text(str(campo))
+				ln.pack_start(field)
+				
+			tbl.pack_start(ln)
+			
+		dad.add(tbl)
+		self.glade.get_object("MainWindow").show_all()
+	
+	def removeLabel(self):
+		if self.glade.get_object("viewport1").get_child():
+			self.glade.get_object("viewport1").get_child().destroy()
+	
+	def addLabel(self):
+		self.removeLabel()
+		self.glade.get_object("viewport1").add(gtk.Label('msg'))
 	
 	def clearForm(self, arg2):
 		"""
@@ -79,8 +100,8 @@ class mainPanel():
 			
 			#TODO : fazer de modo que eu não precise definir o nome de cada campo
 		"""
+		self.addLabel()
 		self.glade.get_object('nome').set_text("")
-		self.glade.get_object('msg').set_text("")
 		
 	def submitForm(self, arg2):
 		"""
@@ -115,7 +136,9 @@ class mainPanel():
 				self = Objeto GTK.Window
 				msg = Mensagem a ser exibida
 		"""
-		self.glade.get_object('msg').set_text(msg)
+		self.addLabel()
+		self.glade.get_object("viewport1").get_child().set_text(msg)
+		self.glade.get_object("MainWindow").show_all()
 
 
 if __name__ == "__main__":

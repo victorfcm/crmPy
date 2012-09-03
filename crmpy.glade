@@ -129,13 +129,6 @@
               <object class="GtkViewport" id="viewport1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkLabel" id="msg">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Mensagens do programa</property>
-                  </object>
-                </child>
               </object>
             </child>
           </object>
