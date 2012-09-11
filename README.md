@@ -26,7 +26,6 @@ Layout feito com Glade 3, alterações de XML feitas na mão, e.g.: gtkBox => gt
 
 ##### TODO:
 * Melhorias :
- + Adicionar validação de campos no submit
  + Criar função para remover cliente
  + Criar função para editar cliente
  + Criar função para buscar cliente
