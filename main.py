@@ -28,6 +28,7 @@ import gtk
 import gtk.glade
 import gtk.gdk
 import conexao
+import re # regexp libary
 import pprint # fazer um 'var_dump' de uma variável, utilize pprint.pprint(variavel)
 class mainPanel():
 	"""
@@ -58,7 +59,7 @@ class mainPanel():
 		self.glade.connect_signals(dic) # adiciona os triggers
 		self.updateLayout() # exibe todo conteúdo
 	
-	def keyListener(self, arg1, event):
+	def keyListener(self, widget, event):
 		"""
 			Função listener de keypress para execução das teclas de atalho
 		"""
@@ -71,7 +72,7 @@ class mainPanel():
 		if event.keyval == 64572: # F3
 			pass # Pesquisar usuario
 		if event.keyval == 65293: # ENTER
-			self.submitForm(arg1)
+			self.submitForm(widget)
 	
 	def viewAll(self, widget):
 		"""
@@ -79,7 +80,7 @@ class mainPanel():
 			
 			@param:
 				self = Objeto GTK.Window
-				widget = UNDEFINED!!! #TODO : descobrir o que é o segundo argumento
+				widget = widget pai
 		"""
 		conexao.db.execute('SELECT * FROM cliente') # chama a query
 		clientes = conexao.db.fetchall() # transforma os resultados em um dicionário
@@ -159,20 +160,48 @@ class mainPanel():
 		telefone = self.glade.get_object("telefone").get_text() # pega o valor do campo telefone
 		
 		if nome and telefone and email:
-			texto = "Cliente %s adicionado no dia %s \n Telefone: %s \n Email: %s" % (nome, data, telefone, email) # define texto de saida
-			self.setMsg(texto)
-			
-			try:
-				# TODO : criar um novo método para inserção
-				conexao.db.execute("INSERT INTO cliente (nome, email, telefone) VALUES ('%s', '%s', '%s')" % (nome, email, telefone)) # tenta inserir no banco os dados inseridos
-				conexao.con.commit()
-			except:
-				conexao.con.rollback() # caso não funcione, executa um rollback na query e preserva os dados
-				self.setMsg('Erro no SQL, por favor, verifique as configurações') # exibe a mensagem de erro
-			
+			if self.validate({ data : 'data', email : 'email', telefone : 'tel', nome : 'str'} ):
+				texto = "Cliente %s adicionado no dia %s \n Telefone: %s \n Email: %s" % (nome, data, telefone, email) # define texto de saida
+				self.setMsg(texto)
+				
+				try:
+					# TODO : criar um novo método para inserção
+					conexao.db.execute("INSERT INTO cliente (nome, email, telefone) VALUES ('%s', '%s', '%s')" % (nome, email, telefone)) # tenta inserir no banco os dados inseridos
+					conexao.con.commit()
+				except:
+					conexao.con.rollback() # caso não funcione, executa um rollback na query e preserva os dados
+					self.setMsg('Erro no SQL, por favor, verifique as configurações') # exibe a mensagem de erro
 		else:
 			self.setMsg("Por favor, preencha todos os campos")
 			
+	def validate(self, data):
+		for valor in data.keys():
+			if data[valor] == "tel":
+				rgx = "^\([0-9][0-9]\)[0-9]{4}\-[0-9]{4}$"
+				msg = "Ocorreu um problema na validação do telefone"
+				
+				if not re.compile(rgx).match(valor):
+					self.setMsg(msg)
+					return False
+			
+			if data[valor] == "email":
+				rgx = "^\w+\@\w+\.\w+$"
+				msg = "Ocorreu um erro na validação do Email"
+				
+				if not re.compile(rgx).match(valor):
+					self.setMsg(msg)
+					return False
+			
+			if data[valor] == "str":
+				rgx = "^\w+$"
+				msg = "Ocorreu um erro na validação de String"
+				
+				if not re.compile(rgx).match(valor):
+					self.setMsg(msg)
+					return False
+					
+		return True
+	
 	def setMsg(self, msg):
 		"""
 			Função que exibe as mensagens do programa numa box
