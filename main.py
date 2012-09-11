@@ -66,9 +66,9 @@ class mainPanel():
 		if event.keyval == 65307: # ESC
 			gtk.main_quit()
 		if event.keyval == 65470: # F1
-			self.viewAll(arg1)
+			self.viewAll(widget)
 		if event.keyval == 65471: # F2
-			self.clearForm(arg1)
+			self.clearForm(widget)
 		if event.keyval == 64572: # F3
 			pass # Pesquisar usuario
 		if event.keyval == 65293: # ENTER
